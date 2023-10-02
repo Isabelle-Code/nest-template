@@ -1,12 +1,10 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { Context } from './context.model';
 
 @Injectable()
 export class RequestContextMiddleware implements NestMiddleware {
-  private readonly logger = new Logger(RequestContextMiddleware.name);
-
   constructor(private readonly als: AsyncLocalStorage<Context>) {}
 
   use(req: FastifyRequest['raw'], res: FastifyReply['raw'], next: () => void) {

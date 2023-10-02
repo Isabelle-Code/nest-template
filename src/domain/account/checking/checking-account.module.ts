@@ -12,8 +12,7 @@ import { CheckingAccountService } from './checking-account.service';
       {
         name: CheckingAccount.name,
         useFactory: () => {
-          const schema = CheckingAccountSchema;
-          return schema;
+          return CheckingAccountSchema;
         },
       },
     ]),
