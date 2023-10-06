@@ -17,14 +17,13 @@ export class CheckingAccountService {
   ) {}
 
   async createAccount(accNumber: string): Promise<CheckingAccount> {
-    const accountToCreate = new this.model({
-      active: true,
-      number: accNumber,
-      balance: 0,
-    });
-
     try {
-      const doc: CheckingAccountDocument = await accountToCreate.save();
+      const doc: CheckingAccountDocument = await this.model.create({
+        active: true,
+        number: accNumber,
+        balance: 0,
+      });
+
       this.logger.log(`Account ${accNumber} created with _id ${doc._id}`);
       return doc as CheckingAccount;
     } catch (err) {
@@ -37,17 +36,28 @@ export class CheckingAccountService {
     return (await this.#findAccount(accNumber)) as CheckingAccount;
   }
 
-  async deleteAccount(accNumber: string) {
-    const account: CheckingAccountDocument = await this.#findAccount(accNumber);
-    account.active = false;
-    await account.save();
-    this.logger.log(`Checking account ${accNumber} disabled`);
+  async deleteAccount(accNumber: string): Promise<void> {
+    try {
+      await this.model.findOneAndUpdate(
+        {
+          number: accNumber,
+        },
+        {
+          active: false,
+        },
+      );
+      this.logger.log(`Checking account ${accNumber} disabled`);
+    } catch (error) {
+      this.logger.warn(`Checking account ${accNumber} does not exists`);
+      return Promise.reject();
+    }
   }
 
   async #findAccount(accNumber: string): Promise<CheckingAccountDocument> {
-    const acc: CheckingAccountDocument = await this.model
-      .findOne({ number: accNumber, active: true })
-      .exec();
+    const acc: CheckingAccountDocument = await this.model.findOne({
+      number: accNumber,
+      active: true,
+    });
 
     if (!acc) {
       this.logger.warn(`Checking account ${accNumber} does not exists`);

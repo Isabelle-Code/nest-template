@@ -22,17 +22,6 @@ export class CheckingAccount {
     default: true,
   })
   active: boolean;
-
-  deposit(amount: number): void {
-    this.balance += amount;
-  }
-
-  withdraw(amount: number): void {
-    if (amount > this.balance) {
-      throw new Error('Insufficient funds');
-    }
-    this.balance -= amount;
-  }
 }
 
 export const CheckingAccountSchema =
