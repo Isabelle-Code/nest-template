@@ -5,8 +5,6 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 export class RequestLoggerMiddleware implements NestMiddleware {
   private readonly logger = new Logger(RequestLoggerMiddleware.name);
 
-  constructor() {}
-
   use(req: FastifyRequest['raw'], res: FastifyReply['raw'], next: () => void) {
     const msg = `${req.method}::${req.url}`;
 

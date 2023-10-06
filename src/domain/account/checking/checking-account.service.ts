@@ -49,7 +49,7 @@ export class CheckingAccountService {
       this.logger.log(`Checking account ${accNumber} disabled`);
     } catch (error) {
       this.logger.warn(`Checking account ${accNumber} does not exists`);
-      return Promise.reject();
+      return Promise.reject(new AccountDoesNotExists(accNumber));
     }
   }
 

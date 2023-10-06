@@ -158,7 +158,7 @@ describe('CheckingAccountService', () => {
       const promise = service.deleteAccount(accNumber);
 
       // then
-      expect(promise).rejects.toBeUndefined();
+      expect(promise).rejects.toThrow(AccountDoesNotExists);
     });
   });
 });

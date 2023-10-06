@@ -5,8 +5,6 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 export class TrackingMiddleware implements NestMiddleware {
   private readonly logger = new Logger(TrackingMiddleware.name);
 
-  constructor() {}
-
   use(req: FastifyRequest['raw'], res: FastifyReply['raw'], next: () => void) {
     this.logger.debug('Executing tracking headers interceptor...');
 
